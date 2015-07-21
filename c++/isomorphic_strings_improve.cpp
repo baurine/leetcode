@@ -3,18 +3,16 @@
 // isomorphic 的两个规则：source 字符串中的相同字符，映射到 target 时字符也要相同；
 // source 字符串中不同的字符，映射到 target 时字符不能相同。
 class Solution {
-private:
-    // source 是一个 hash 表，存储 key-value 映射关系，且 key = position
-    // target 是一个位图 hash 表，用于存储 value 是否已经被映射
-    // 两者作为类的成员变量，其值被初始化成默认值 0
-    char source[128], target[128];
-
 public:
     bool isIsomorphic(string s, string t) {
+        // source 是一个 hash 表，存储 key-value 映射关系，且 key = position
+        // target 是一个位图 hash 表，用于存储 value 是否已经被映射
+        char source[128] = {0}, target[128] = {0};
         char s_c, t_c;
         bool is_isomorphic = true;
+        int len = s.size();
 
-        for (int i=0; i<s.size(); i++) {
+        for (int i=0; i<len; i++) {
             s_c = s[i];
             t_c = t[i];
             

@@ -3,6 +3,7 @@
 class Stack {
 private:
     list<int> queue_list;
+
 public:
     // Push element x onto stack.
     void push(int x) {

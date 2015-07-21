@@ -7,6 +7,7 @@
 class Queue {
 private:
     std::list<int> stack, stack_tmp;
+
 public:
     // Push element x to the back of queue.
     void push(int x) {

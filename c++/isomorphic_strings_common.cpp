@@ -1,15 +1,15 @@
 // https://leetcode.com/problems/isomorphic-strings/
 // 此法比较常规，效率不够高，有优化空间
 class Solution {
-private:
-    map<char, char> char_map;
-    // 用于存储映射后的字符集
-    set<char> char_used;
-
 public:
     bool isIsomorphic(string s, string t) {
+        map<char, char> char_map;
+        // 用于存储映射后的字符集
+        set<char> char_used;
+
         char s_c, t_c;
         bool is_isomorphic = true;
+
         for (int i=0; i<s.size(); i++) {
             s_c = s[i];
             t_c = t[i];
@@ -27,6 +27,7 @@ public:
                 break;
             }
         }
+
         return is_isomorphic;
     }
 };
