@@ -27,18 +27,17 @@ public:
             first = first->next;
         }
         
-        // 简单这样处理有内存泄露啊
+
+        // release nodes to avoid memory leak
+        first = head->next;
+        ListNode* delNode;
+        while (first != NULL) {
+           delNode = first;
+           first = first->next;
+           delete delNode;
+        }
+
         head->next = NULL;
-        
-        // 下面的代码运行时出错，没有调试，暂时不知道错在哪里
-        // 有可能是因为 ListNode* 是 malloc 出来的，所以不能用 delete?
-        // first = head->next;
-        // ListNode* delNode;
-        // while (first != NULL) {
-        //    delNode = first;
-        //    first = first->next;
-        //    delete delNode;
-        // }
         
         return retHead;
     }
