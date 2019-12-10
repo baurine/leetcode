@@ -3,6 +3,7 @@ mod math_util;
 mod euler_1;
 mod euler_10;
 mod euler_11;
+mod euler_12;
 mod euler_2;
 mod euler_3;
 mod euler_4;
