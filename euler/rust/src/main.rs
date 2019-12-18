@@ -1,3 +1,6 @@
+// 需要 nightly 版本
+#![feature(test)]
+
 mod math_util;
 
 mod euler_1;

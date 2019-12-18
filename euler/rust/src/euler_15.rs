@@ -6,8 +6,6 @@ https://projecteuler.net/problem=15
 解题思路：递归法。p(m, n) = p(m-1, n) + p(m-1, n-1) + p(m-1, n-2) + ... p(m-1, 0)
 
 但纯递归法耗时太多，可以把中间结果缓存下来。(嗯，可以回头看看第 14 题了，也可以用递归法加缓存中间结果)
-
-?? Rust 怎么跑 benchmark
 */
 
 // 递归法，只能用于 m 和 n 较小时
@@ -48,9 +46,12 @@ pub fn solution_2() -> u64 {
 }
 
 /////////////////////////////////////
+extern crate test;
+
 #[cfg(test)]
 mod tests {
   use super::*;
+  use test::Bencher;
 
   #[test]
   fn test_path_slow() {
@@ -67,4 +68,21 @@ mod tests {
   fn test_solution_2() {
     assert_eq!(solution_2(), 137846528820);
   }
+
+  #[bench]
+  fn bench_path_slow_1(b: &mut Bencher) {
+    b.iter(|| path_slow(12, 12))
+  }
+
+  #[bench]
+  fn bench_path_slow_2(b: &mut Bencher) {
+    b.iter(|| {
+      let mut v: Vec<u64> = vec![0; 100 * 100];
+      path_slow_2(&mut v, 12, 12)
+    })
+  }
 }
+
+// benchmark:
+// test euler_15::tests::bench_path_slow_1 ... bench:  11,232,767 ns/iter (+/- 1,193,675)
+// test euler_15::tests::bench_path_slow_2 ... bench:       5,319 ns/iter (+/- 1,699)
