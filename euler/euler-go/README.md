@@ -31,6 +31,13 @@ $ cd euler/euler-go/euler
 $ go test euler1_test.go euler1.go -v
 ```
 
+Benchmark:
+
+```sh
+$ cd euler/euler-go/euler
+$ go test -bench=.
+```
+
 (有点反常，不能直接在根目录下执行 `go test`，必须进入到测试文件所在的目录执行 `go test`...而且在测试中不是使用 assert 等断言语句，而是用 t.Error()，t.Fatal() 等方法来表示失败)
 
 Format code:
