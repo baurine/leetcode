@@ -11,6 +11,8 @@ mod euler_13;
 mod euler_14;
 mod euler_15;
 mod euler_16;
+mod euler_17;
+mod euler_17_2;
 mod euler_2;
 mod euler_3;
 mod euler_4;
