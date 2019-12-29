@@ -6,6 +6,7 @@ Work out the first ten digits of the sum of the following one-hundred 50-digit n
 注意：2^64 得到数只有 19 位，就是说 u64 的最大范围是 19 位十进制数，而 50 位已远超 19 位，不是 u64 可以表示的。
 
 解题思路：
+
 将每个 50 位拆成 5 个 10 位数，先将 100 个最后 10 位数相加，得到进位数，然后将次后 10 位数相加，加上前面得到的进位数，
 依次这样操作。
 */
