@@ -1,5 +1,7 @@
 # Exercism Rust Note
 
+按网站上的指南安装 exercism 本地命令，使用 `exercism submit [files]` 提交作业。每执行一次测试，exercism 就会记录一次当前的实现并作为历史记录一并提交到网站。
+
 ## 1. Hello World
 
 如何跑测试：
@@ -84,4 +86,45 @@ use unicode_segmentation::UnicodeSegmentation;
 pub fn reverse(input: &str) -> String {
   input.graphemes(true).rev().collect()
 }
+```
+
+## 3. Giga Seconds
+
+问题：求某个时间之后 10^9 秒后的时间。使用 chrono 这个 crate 完成需求。
+
+比如一个测试是这样的：
+
+```rust
+use gigasecond;
+use chrono::{TimeZone, Utc};
+
+#[test]
+fn test_date() {
+    let start_date = Utc.ymd(2011, 4, 25).and_hms(0, 0, 0);
+
+    assert_eq!(
+        gigasecond::after(start_date),
+        Utc.ymd(2043, 1, 1).and_hms(1, 46, 40)
+    );
+}
+```
+
+实现很简单，chrono 这个 crate 的文档示例中正好有。
+
+```rust
+use chrono::{DateTime, Utc};
+use time::Duration;
+
+// Returns a Utc DateTime one billion seconds after start.
+pub fn after(start: DateTime<Utc>) -> DateTime<Utc> {
+    start + Duration::seconds(1_000_000_000)
+}
+```
+
+Duration 来自 time 这个 crate，chrono 依赖了 time crate，但上面的编译会报错，需要在 Cargo.toml 显式声明依赖 time 这个 crate。(疑惑，为什么还要显式声明，像 npm 都不用啊。==，npm 是真的不用吗？有待验证，即被依赖的库，我如果想直接在我的代码里使用，是否还需要在 package.json 中声明呢？)
+
+```toml
+[dependencies]
+chrono = "0.4" # 这个原来就有的
+time = "0.1" # 为了通过编译后加的
 ```
