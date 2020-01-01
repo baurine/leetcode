@@ -1,5 +1,7 @@
 package euler
 
+import "time"
+
 func leapYear(y int) bool {
 	if y%400 == 0 {
 		return true
@@ -27,6 +29,19 @@ func Euler19() int {
 				accDays += leapYearMonths[m]
 			} else {
 				accDays += nonLeapYearMonths[m]
+			}
+		}
+	}
+	return count
+}
+
+func Euler19_2() int {
+	count := 0
+	for y := 1901; y <= 2000; y++ {
+		for m := time.January; m <= time.December; m++ {
+			d := time.Date(y, m, 1, 0, 0, 0, 0, time.UTC)
+			if d.Weekday() == time.Sunday && d.Day() == 1 {
+				count += 1
 			}
 		}
 	}

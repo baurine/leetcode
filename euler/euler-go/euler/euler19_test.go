@@ -31,3 +31,9 @@ func TestEuler19(t *testing.T) {
 		t.Error("failed")
 	}
 }
+
+func TestEuler19_2(t *testing.T) {
+	if 171 != Euler19_2() {
+		t.Error("failed")
+	}
+}

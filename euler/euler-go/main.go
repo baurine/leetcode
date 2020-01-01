@@ -7,5 +7,5 @@ import (
 
 func main() {
 	fmt.Println("euler by go")
-	fmt.Println(euler.Euler18())
+	fmt.Println(euler.Euler19_2())
 }
