@@ -50,6 +50,22 @@ pub fn sundays() -> usize {
   sum
 }
 
+use chrono::prelude::*;
+use time::Duration;
+
+// 直接使用 chrono crate
+pub fn sundays_2() -> usize {
+  let mut count = 0;
+  let mut d = Utc.ymd(1901, 1, 1);
+  while d <= Utc.ymd(2000, 12, 31) {
+    if d.weekday() == Weekday::Sun && d.day() == 1 {
+      count += 1;
+    }
+    d = d + Duration::days(1);
+  }
+  count
+}
+
 /////////////////////////////////////
 #[cfg(test)]
 mod tests {
@@ -69,5 +85,10 @@ mod tests {
   #[test]
   fn test_solution() {
     assert_eq!(sundays(), 171);
+  }
+
+  #[test]
+  fn test_solution_2() {
+    assert_eq!(sundays_2(), 171);
   }
 }
