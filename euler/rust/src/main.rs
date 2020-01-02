@@ -15,6 +15,7 @@ mod euler_17;
 mod euler_17_2;
 mod euler_18;
 mod euler_19_sundays;
+mod euler_20_factorial_100;
 mod euler_2;
 mod euler_3;
 mod euler_4;

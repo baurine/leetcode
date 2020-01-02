@@ -21,6 +21,7 @@ Test one:
 ```sh
 $ cd euler/rust
 $ cargo test euler_17
+$ cargo test euler_17 -- --nocapture # 允许打印日志
 ```
 
 Benchmark all:
