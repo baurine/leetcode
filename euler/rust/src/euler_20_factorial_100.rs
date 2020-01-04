@@ -1,5 +1,5 @@
 /*
-https://projecteuler.net/problem=12
+https://projecteuler.net/problem=20
 
 问题：求 100 阶乘后的数每一位相加后的总和
 
