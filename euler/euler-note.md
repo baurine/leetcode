@@ -125,3 +125,30 @@ go 中用 fmt.Sprintf() 进行字符串格式化，用 `strings.split(str, split
       carry = carry / 10;
     }
 ```
+
+## 第 21 题 - Amicable numbers
+
+问题：
+
+Let d(n) be defined as the sum of proper divisors of n (numbers less than n which divide evenly into n).
+If d(a) = b and d(b) = a, where a ≠ b, then a and b are an amicable pair and each of a and b are called amicable numbers.
+
+For example, the proper divisors of 220 are 1, 2, 4, 5, 10, 11, 20, 22, 44, 55 and 110; therefore d(220) = 284. The proper divisors of 284 are 1, 2, 4, 71 and 142; so d(284) = 220.
+
+Evaluate the sum of all the amicable numbers under 10000.
+
+解题思路：
+
+没啥捷径，暴力枚举。虽然简单，为了通过测试也费了点时间，主要是一些边缘 case，比如 d(a) = b，结果 a = b 的情况没有排除掉。
+
+学习了 rust/go 中的数学模块，求 sqrt/floor，sort，int/float 互转。
+
+rust 中求 sqrt/floor: `(n as f64).sqrt().floor() as usize`。
+
+go 中求 sqrt/floor，需要 `import "math"`，`int(math.Floor(math.Sqrt(float64(n))))`。
+
+rust 中 sort: `v.sort();`
+
+go 中 sort，需要 `import "sort"`，`sort.Ints(v)`。
+
+(暂时中断 euler 练习，优先完成 exercism 上的练习)
