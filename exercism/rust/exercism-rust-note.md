@@ -204,6 +204,55 @@ impl fmt::Display for Clock {
 
 1.  如果想让 struct 自动实现 PartialEq trait，那么这个 struct 必须先实现 Debug trait。因为 PartiqlEq 实现时是直接比较两个 struct 的 `{:?}` 实现的 String 的。
 
+### 5. Atbash Cipher
+
+对字符串进行加密和解密，加密解密算法是一样的，a->z，b->y 依此类推。
+
+考查点：rust 如何处理字符串和字符。(刚好看完了 rust dao 第八章 - 字符串和集合类型，这里面就有相关的例子)
+
+solution:
+
+```rust
+const A_LOWERCASE: u32 = 97;
+const Z_LOWERCASE: u32 = A_LOWERCASE + 26 - 1;
+
+fn convert_char(ori_char: char) -> char {
+  if ori_char.is_numeric() {
+    ori_char
+  } else {
+    std::char::from_u32(A_LOWERCASE + Z_LOWERCASE - ori_char as u32).unwrap()
+  }
+}
+
+/// "Encipher" with the Atbash cipher.
+pub fn encode(plain: &str) -> String {
+  plain
+    .to_lowercase()
+    .chars()
+    .filter(|c| c.is_alphanumeric())
+    .enumerate()
+    .map(|(i, c)| {
+      if (i + 1) % 5 == 0 {
+        format!("{} ", convert_char(c))
+      } else {
+        convert_char(c).to_string()
+      }
+    })
+    .collect::<String>()
+    .trim()
+    .to_string()
+}
+
+/// "Decipher" with the Atbash cipher.
+pub fn decode(cipher: &str) -> String {
+  cipher
+    .chars()
+    .filter(|c| c.is_alphanumeric())
+    .map(|c| convert_char(c).to_string())
+    .collect()
+}
+```
+
 ## Side exercises
 
 ### Leap Year
@@ -262,6 +311,28 @@ pub fn raindrops(n: u32) -> String {
 }
 ```
 
+更具有扩展性的解法 (awesome)：
+
+```rust
+pub fn raindrops(n: u32) -> String {
+  let sounds = vec![(3, "Pling"), (5, "Plang"), (7, "Plong")];
+
+  let s = sounds
+    .iter()
+    .filter(|item| n % item.0 == 0)
+    .map(|item| item.1.to_string())
+    .collect::<String>();
+
+  if s.len() == 0 {
+    n.to_string()
+  } else {
+    s
+  }
+}
+```
+
+还是要多向社区学习。
+
 ### Nth Prime
 
 考查点：loop
@@ -293,6 +364,41 @@ pub fn nth(n: u32) -> u32 {
   0
 }
 ```
+
+mentor review，更希望看到使用迭代器的解决方案，参考社区后修改如下：
+
+```rust
+fn is_prime(num: u32) -> bool {
+  for i in 2..(num / 2 + 1) {
+    if num % i == 0 {
+      return false;
+    }
+  }
+  true
+}
+
+struct Primes(u32);
+
+impl Iterator for Primes {
+  type Item = u32;
+
+  fn next(&mut self) -> Option<Self::Item> {
+    for i in (self.0 + 1).. {
+      if is_prime(i) {
+        self.0 = i;
+        return Some(i);
+      }
+    }
+    None
+  }
+}
+
+pub fn nth(n: u32) -> u32 {
+  Primes(1).nth(n as usize).unwrap()
+}
+```
+
+看似简单的题目，也蕴含出题者背后的用心。
 
 ### Beer Song
 
@@ -391,5 +497,156 @@ pub fn sing(start: u32, end: u32) -> String {
     .map(verse)
     .collect::<Vec<_>>()
     .join("\n")
+}
+```
+
+### Proverb
+
+考查点：format! 宏的使用。根据输入的单词数组，输出一首诗。
+
+我的常规解法：
+
+```rust
+pub fn build_proverb(list: &[&str]) -> String {
+  if list.len() == 0 {
+    return "".to_string();
+  }
+  let mut v = vec![];
+  for i in 0..list.len() - 1 {
+    v.push(format!(
+      "For want of a {} the {} was lost.",
+      list[i],
+      list[i + 1]
+    ));
+  }
+  v.push(format!("And all for the want of a {}.", list[0]));
+  v.join("\n")
+}
+```
+
+但是社区里有很多有趣的解法。
+
+解法 1：
+
+```rust
+pub fn build_proverb(list: &[&str]) -> String {
+    let mut proverbs = vec![];
+
+    for (left, right) in list.iter().zip(list.iter().skip(1)) {
+        proverbs.push(format!("For want of a {} the {} was lost.", left, right));
+    }
+
+    if let Some(first) = list.first() {
+        proverbs.push(format!("And all for the want of a {}.", first));
+    }
+
+    proverbs.join("\n")
+}
+```
+
+解法 2：
+
+```rust
+pub fn build_proverb(list: &[&str]) -> String {
+    list.windows(2)
+        .map(|w| format!("For want of a {} the {} was lost.\n", w[0], w[1]))
+        .chain(std::iter::once(list.first().map_or(String::new(), |v| {
+            format!("And all for the want of a {}.", v)
+        })))
+        .collect()
+}
+```
+
+### Difference Of Squares
+
+考查点：fold, map, math
+
+求 1 到 n 的和的平方，与平方的和，之间的差。
+
+有点轻车熟驾了：
+
+```rust
+pub fn square_of_sum(n: u32) -> u32 {
+    (1..=n).sum::<u32>().pow(2)
+}
+
+pub fn sum_of_squares(n: u32) -> u32 {
+    (1..=n).map(|i| i.pow(2)).sum::<u32>()
+}
+
+pub fn difference(n: u32) -> u32 {
+    square_of_sum(n) - sum_of_squares(n)
+}
+```
+
+### Sum of Multiples
+
+考查点：borrowing, math, algorithms
+
+问题：
+
+Given a number, find the sum of all the unique multiples of particular numbers up to but not including that number.
+
+If we list all the natural numbers below 20 that are multiples of 3 or 5, we get 3, 5, 6, 9, 10, 12, 15, and 18.
+
+The sum of these multiples is 78.
+
+我的解法，一行代码搞定：
+
+```rust
+pub fn sum_of_multiples(limit: u32, factors: &[u32]) -> u32 {
+    (1..limit).filter(|n| factors.iter().any(|f| f>&0 && n%f == 0)).sum::<u32>()
+}
+```
+
+另一种解法，对 factors 进行迭代，每一个元素分别乘以 1 到 n/i，然后对所有结果进行去重，再求和。试一下。
+
+```rust
+use std::collections::HashSet;
+
+pub fn sum_of_multiples(limit: u32, factors: &[u32]) -> u32 {
+    factors
+        .iter()
+        .filter(|&&f| f > 0)
+        .flat_map(|f| (1..(limit + f - 1) / f).map(move |i| i * f))
+        .collect::<HashSet<u32>>()
+        .iter()
+        .sum()
+}
+```
+
+对闭包的所有权的几种使用方式还是有点懵，需要再复习一下并多多练习。
+
+### Grains
+
+考查点：panic，处理错误
+
+问题：就是农夫跟国王要粮食的故事，在棋盘上第一格放一粒米，第二格放二粒，后一格是前一格的二倍，求总和。
+
+我的常规解法：
+
+```rust
+pub fn square(s: u32) -> u64 {
+  if s > 64 || s < 1 {
+    panic!("Square must be between 1 and 64");
+  }
+  2u64.pow(s - 1)
+}
+
+pub fn total() -> u64 {
+  (1..=64).map(|n| square(n)).sum::<u64>()
+}
+```
+
+社区解法，首先 square() 中的条件限制可以用 assert! 宏替代，其次 total() 可以直接用数学公式计算出来，就是 2^ 64 - 1，但直接这么算会溢出，所以用 2^63-1+2^63 替换。
+
+```rust
+pub fn square(s: u32) -> u64 {
+  assert!(s >= 1 && s <= 64, "Square must be between 1 and 64");
+  2u64.pow(s - 1)
+}
+
+pub fn total() -> u64 {
+  square(64) - 1 + square(64)
 }
 ```
