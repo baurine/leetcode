@@ -650,3 +650,80 @@ pub fn total() -> u64 {
   square(64) - 1 + square(64)
 }
 ```
+
+### Prime Factors
+
+考查点：math
+
+简单的数学计算，略。
+
+### Armstrong Numbers
+
+考查点：math
+
+简单的数学计算，略。
+
+### High Scores
+
+考查点：iterators, lifetimes, vectors
+
+遇到一个有点挑战的题目。
+
+问题：
+
+Manage a game player's High Score list.
+
+Your task is to build a high-score component of the classic Frogger game, one of the highest selling and addictive games of all time, and a classic of the arcade era. Your task is to write methods that return the highest score from the list, the last added score and the three highest scores.
+
+Hints：
+
+Consider retaining a reference to scores in the struct - copying is not necessary. You will require some lifetime annotations, though.
+
+我的解法：
+
+```rust
+#[derive(Debug)]
+pub struct HighScores<'a> {
+    scores: &'a [u32],
+}
+
+impl<'a> HighScores<'a> {
+    pub fn new(scores: &'a [u32]) -> Self {
+        HighScores { scores }
+    }
+
+    pub fn scores(&self) -> &[u32] {
+        self.scores
+    }
+
+    pub fn latest(&self) -> Option<u32> {
+        // match self.scores.len() {
+        //     0 => None,
+        //     _ => Some(self.scores[self.scores.len() - 1]),
+        // }
+        self.scores.last().map(|s| *s)
+    }
+
+    pub fn personal_best(&self) -> Option<u32> {
+        let mut v = self.scores.to_vec();
+        v.sort();
+        v.last().map(|s| *s)
+    }
+
+    pub fn personal_top_three(&self) -> Vec<u32> {
+        let mut v = self.scores.to_vec();
+        v.sort();
+        v.iter().rev().take(3).map(|s| *s).collect::<Vec<_>>()
+    }
+}
+```
+
+对 Option 的处理，刚好看完 rust dao 第九章处理错误这一章，有相关的内容，比如 map() 方法，and_then() 方法。
+
+考查到了生命周期，slice，vector，迭代器，自动解引用等 rust 的难点。虽然我最后做出来的通过了所有测试，但还是没有完全搞清楚，尤其是迭代器的闭包中到底是用值还是引用。
+
+还需要重点复习的知识点：
+
+- 自动解引用
+- iter()，闭包的几种形式
+- 省略生命周期声明的几种情况
