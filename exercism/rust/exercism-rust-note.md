@@ -253,6 +253,41 @@ pub fn decode(cipher: &str) -> String {
 }
 ```
 
+经过 mentor review，encode 和 decode 实际使用的是相同的算法，所以这部分还可以再抽出来。
+
+```rust
+fn convert_str(src: &str) -> Vec<char> {
+  src
+    .to_lowercase()
+    .chars()
+    .filter(|c| c.is_alphanumeric())
+    .map(convert_char)
+    .collect()
+}
+
+/// "Encipher" with the Atbash cipher.
+pub fn encode(plain: &str) -> String {
+  convert_str(plain)
+    .iter()
+    .enumerate()
+    .map(|(i, c)| {
+      if i % 5 == 0 && i > 0 {
+        format!(" {}", c)
+      } else {
+        c.to_string()
+      }
+    })
+    .collect()
+}
+
+/// "Decipher" with the Atbash cipher.
+pub fn decode(cipher: &str) -> String {
+  convert_str(cipher).iter().collect()
+}
+```
+
+但这还不够完美，因为 convert_str() 其实并不需要返回 String，直接返回迭代器就行了，但这种写法暂时还不知道该怎么实现。先跳过，回头再优化。
+
 ## Side exercises
 
 ### Leap Year
@@ -663,7 +698,7 @@ pub fn total() -> u64 {
 
 简单的数学计算，略。
 
-### High Scores
+### High Scores (v)
 
 考查点：iterators, lifetimes, vectors
 
@@ -697,10 +732,6 @@ impl<'a> HighScores<'a> {
     }
 
     pub fn latest(&self) -> Option<u32> {
-        // match self.scores.len() {
-        //     0 => None,
-        //     _ => Some(self.scores[self.scores.len() - 1]),
-        // }
         self.scores.last().map(|s| *s)
     }
 
@@ -724,6 +755,98 @@ impl<'a> HighScores<'a> {
 
 还需要重点复习的知识点：
 
-- 自动解引用
-- iter()，闭包的几种形式
-- 省略生命周期声明的几种情况
+- 自动解引用 (理解了)
+- iter()，闭包的几种形式 (理解深一点了)
+- 省略生命周期声明的几种情况 (待看)
+
+经过 mentor review，一些可以改进的点：
+
+- iterator 有 max() 方法
+- sort() + iter() + rev() 方法可以用 sort_by() 替代
+- take(3) 可以用 truncate(3) 替代
+
+改进后：
+
+```rust
+    pub fn personal_best(&self) -> Option<u32> {
+        self.scores.to_vec().into_iter().max()
+    }
+
+    pub fn personal_top_three(&self) -> Vec<u32> {
+        let mut v = self.scores.to_vec();
+        v.sort_by(|a, b| b.cmp(a));
+        v.truncate(3);
+        v
+    }
+```
+
+### Bob
+
+考查点：chars 和 strings
+
+问题：你朝 bob 说不同的话，它会进行不同的回复。
+
+解答：
+
+```rust
+const REPLIES: [&'static str; 5] = [
+  "Sure.",                             // question
+  "Whoa, chill out!",                  // YELL
+  "Calm down, I know what I'm doing!", // YELL and question, aka YELL?
+  "Fine. Be that way!",                // empty
+  "Whatever.",                         // others
+];
+
+pub fn reply(message: &str) -> &str {
+  let msg = message.trim();
+  let empty = msg.is_empty();
+  let question = msg.chars().last() == Some('?');
+  let alphas = msg
+    .chars()
+    .filter(|c| c.is_alphabetic())
+    .collect::<String>();
+  let yell = alphas.len() > 0 && alphas.chars().all(|c| c.is_uppercase());
+
+  if empty {
+    REPLIES[3]
+  } else if yell && question {
+    REPLIES[2]
+  } else if yell {
+    REPLIES[1]
+  } else if question {
+    REPLIES[0]
+  } else {
+    REPLIES[4]
+  }
+}
+```
+
+### Matching Brackets
+
+考查点：stack, recursion
+
+问题：判断一个数学表达式括号是否匹配。
+
+解答：
+
+常规的栈的使用。暂时没想到用递归怎么解。看了一下社区解法也都是用栈实现的。我一开始写了个比较啰嗦的写法，用了 25 行，看了一下社区的解法，简洁写法可以达到 15 行，而且思路也巧妙一点。
+
+```rust
+pub fn brackets_are_balanced(string: &str) -> bool {
+    let mut brackets = vec![];
+    for c in string.chars() {
+        match c {
+            '(' => brackets.push(')'),
+            '[' => brackets.push(']'),
+            '{' => brackets.push('}'),
+            ')' | ']' | '}' if brackets.pop() != Some(c) => {
+                return false;
+            }
+            _ => (),
+        }
+    }
+    brackets.is_empty()
+}
+```
+
+上述的巧妙在于，遇到 "( [ {" 不是把它们自身放到栈里，而是把它们的另一半放到栈里。
