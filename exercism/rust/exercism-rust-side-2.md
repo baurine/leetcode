@@ -250,3 +250,14 @@ pub mod graph {
 - `get_attr()` 方法的实现，有待进一步学习。&String 可以自动解引用为 &str，但 `Option<&String>` 并不能自动解引用为 `Option<&str>`，String 转成 &str 可以用 `as_str()` 或 `as_ref()`，再学习一下类型转换
 - HashMap
 - iterator find()
+
+看了社区的一些解决方法，结构体的成员方法第一个参数还可以传 mut self，如下例所示：
+
+```rust
+pub fn with_nodes(mut self, nodes: &[graph_items::node::Node]) -> Self {
+    nodes.iter().for_each(|node| {
+        self.nodes.push(node.clone());
+    });
+    self
+}
+```

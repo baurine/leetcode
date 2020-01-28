@@ -334,6 +334,18 @@ pub fn decode(cipher: &str) -> String {
 
 把 `'_` 去掉后进行编译，提示说 `impl Iterator<Item = char>` 的生命周期是 static，但 `str.chars()` 是借用，提示加上一个匿名生命周期 `'_` 可以解决问题。
 
+复习 dive into rust 关于 match 一章时发现 `convert_char()` 方法还可以用 match 进行优化：
+
+```rust
+fn convert_char(ori_char: char) -> char {
+  match ori_char {
+    'a'..='z' => std::char::from_u32('a' as u32 + 'z' as u32 - ori_char as u32).unwrap(),
+    'A'..='Z' => std::char::from_u32('A' as u32 + 'z' as u32 - ori_char as u32).unwrap(),
+    _ => ori_char,
+  }
+}
+```
+
 ### 6. Anagram
 
 考查点：lifetimes, loops, str vs strings, strings
