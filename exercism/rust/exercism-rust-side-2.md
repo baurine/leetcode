@@ -279,3 +279,9 @@ pub fn with_nodes(mut self, nodes: &[graph_items::node::Node]) -> Self {
 - push() 操作既可以插入在链表头，也可以插入在链表尾，插入在链表头使操作最方便
 
 详细的笔记记录在 rust-study repo 中。
+
+### Pascal's Triangle
+
+考查点：math，index，vectors。
+
+杨辉三角。vector 中嵌套 vector，简单的数学问题。
