@@ -290,8 +290,38 @@ pub fn with_nodes(mut self, nodes: &[graph_items::node::Node]) -> Self {
 
 考查点：io，trait
 
-统计 io 的 read/write 数量。
+统计 io 的 read/write 数量及次数。
 
 `pub struct ReadStats<R>(::std::marker::PhantomData<R>);`，在最近两个 track 中都看到了 PhantomData，是干嘛用的呢，复习一下。这里先理解成一种占位符吧。
 
 原以为有点小复杂呢，其实就是个简单的装饰器。
+
+看了一下社区的解决方案，使用了 `?` 表达式，貌似更优雅一些：
+
+```rust
+impl<R: Read> Read for ReadStats<R> {
+    fn read(&mut self, buf: &mut [u8]) -> Result<usize> {
+        let bytes = self.reader.read(buf)?;
+        self.bytes += bytes;
+        self.reads += 1;
+        Ok(bytes)
+    }
+}
+```
+
+我直接用了 if let：
+
+```rust
+impl<R: Read> Read for ReadStats<R> {
+    fn read(&mut self, buf: &mut [u8]) -> Result<usize> {
+        self.read_times += 1;
+        let readed = self.wrapped.read(buf);
+        if let Ok(x) = readed {
+            self.read_size += x;
+        }
+        readed
+    }
+}
+```
+
+另外，了解了 rust 中 std::io::Read 和 std::io::Write 这两个 trait 的大致用法。
