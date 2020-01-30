@@ -285,3 +285,13 @@ pub fn with_nodes(mut self, nodes: &[graph_items::node::Node]) -> Self {
 考查点：math，index，vectors。
 
 杨辉三角。vector 中嵌套 vector，简单的数学问题。
+
+### Pass I/O
+
+考查点：io，trait
+
+统计 io 的 read/write 数量。
+
+`pub struct ReadStats<R>(::std::marker::PhantomData<R>);`，在最近两个 track 中都看到了 PhantomData，是干嘛用的呢，复习一下。这里先理解成一种占位符吧。
+
+原以为有点小复杂呢，其实就是个简单的装饰器。
