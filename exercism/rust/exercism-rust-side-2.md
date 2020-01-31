@@ -325,3 +325,25 @@ impl<R: Read> Read for ReadStats<R> {
 ```
 
 另外，了解了 rust 中 std::io::Read 和 std::io::Write 这两个 trait 的大致用法。
+
+Read trait 只要实现了 read() 方法，其它方法 `read_to_end()` `read_to_string()` 依赖 read() 方法，有默认实现。Write trait 只要实现 write() 和 flush() 方法就行。
+
+### Nucleotide Count
+
+考查点：entry api, filter, match, mutability
+
+问题：统计一段 dna 序列中 ATCG 四种核苷酸的个数。
+
+解决：比较简单，遍历，然后用 hashmap 存放统计结果。我觉得这题主要还是考查 hashmap，使用 entry api 来更新 hashmap 中依赖旧值的值。
+
+```rust
+dna.chars().for_each(|c| {
+    // or_insert() 方法事实上会返回这个键的值的一个可变引用（&mut V）
+    let count = char_count.entry(c).or_insert(0);
+    *count += 1;
+});
+```
+
+所需知识点在 rbe [关于 hashmap 一小节](https://doc.rust-lang.org/rust-by-example/std/hash.html)都可以获取。
+
+我的解法中没有用到 match。
