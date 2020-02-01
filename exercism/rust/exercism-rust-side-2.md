@@ -375,3 +375,25 @@ ETL: extract-transform-load
 - 判断全小写：`word == word.to_lowercase()`
 - 清除下划线：`word.trim_matches('_')`
 - 取字符串首字母：`word.chars().next().unwrap()`
+
+### Sieve
+
+考查点：map, math, vector, while let (实际我并没有用到 map, while let)
+
+问题：使用筛子法求质数
+
+解决：简单的数学问题，双重循环就行了，不知道为什么考查点里有 map 和 while let，并没有用到 Option 啊。看了一下社区的方案，很多也简单问题复杂化了，很多人用了两个 vec，其实只需要一个就行了。倒是从社区学习到了 range to vec 的快速办法：`let mut primes: Vec<u64> = (0..=upper_bound).collect();`，再次温习了 `step_by()` 的用法。
+
+```rust
+pub fn primes_up_to(upper_bound: u64) -> Vec<u64> {
+  let mut primes: Vec<u64> = (0..=upper_bound).collect();
+  for i in 2..=upper_bound {
+    if primes[i as usize] > 0 {
+      for j in (i * 2..=upper_bound).step_by(i as usize) {
+        primes[j as usize] = 0;
+      }
+    }
+  }
+  primes.into_iter().filter(|&p| p >= 2).collect()
+}
+```
