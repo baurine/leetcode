@@ -361,3 +361,17 @@ ETL: extract-transform-load
 解决：对 src 进行遍历，将 key value 交换插入 target BTreeMap 中。
 
 看了社区的解决方案后，发现将单个大写字母转小写有现成的方法：`to_ascii_lowercase()`
+
+### Acronym
+
+考查点：filter, flat_map, loops, map ...
+
+问题：为字符串生成缩写，比如 HyperText Markup Language，得到缩写 HTML
+
+解决，主要是要解决一些边缘 case，比如全大写，全小写，含有连字符的情况。
+
+- split 后再次进行 split，这时可以用 flat_map: `phrase.split(" ").flat_map(|word| word.split("-"))`
+- 判断全大写: `word == word.to_uppercase()`
+- 判断全小写：`word == word.to_lowercase()`
+- 清除下划线：`word.trim_matches('_')`
+- 取字符串首字母：`word.chars().next().unwrap()`
