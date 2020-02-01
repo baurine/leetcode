@@ -359,3 +359,5 @@ ETL: extract-transform-load
 主要是考查对 BTreeMap 的理解，BTreeMap 插入时会按 key 进行排序，而 HashMap 不会。
 
 解决：对 src 进行遍历，将 key value 交换插入 target BTreeMap 中。
+
+看了社区的解决方案后，发现将单个大写字母转小写有现成的方法：`to_ascii_lowercase()`
