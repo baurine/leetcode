@@ -347,3 +347,15 @@ dna.chars().for_each(|c| {
 所需知识点在 rbe [关于 hashmap 一小节](https://doc.rust-lang.org/rust-by-example/std/hash.html)都可以获取。
 
 我的解法中没有用到 match。
+
+### ETL
+
+ETL: extract-transform-load
+
+考查点：btree
+
+问题：将 point -> chars 的 BTreeMap 转换成 char -> point 的 BTreeMap
+
+主要是考查对 BTreeMap 的理解，BTreeMap 插入时会按 key 进行排序，而 HashMap 不会。
+
+解决：对 src 进行遍历，将 key value 交换插入 target BTreeMap 中。
