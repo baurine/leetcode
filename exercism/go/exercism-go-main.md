@@ -128,26 +128,16 @@ Rust 中数字转换成字符串可以用 `n.to_string()`，Go 不行，可以�
 
 Rust 中字符串转换在数字可以用 `"42".parse()`，Go 还是用 strconv 这个包的方法 `strconv.Atoi("42")`。
 
-## Side exercise
+### 5. Scrabble Score
 
-### Leap year
+考查点：loops, maps, strings
 
-考查点：boolean, conditional, int
+问题：每个字符有一个权重值，求一个字符串的总权重值。
 
-闰年计算，略。
+解决：略。
 
-### Gigasecond
+学习到的：
 
-考查点：time pkg 使用
-
-```go
-package gigasecond
-
-import "time"
-
-const GIGASECONDS time.Duration = time.Second * 1_000_000_000
-
-func AddGigasecond(t time.Time) time.Time {
-	return t.Add(GIGASECONDS)
-}
-```
+- map 的初始化，遍历
+- strings 包的使用，包括转大小写，判断包含
+- Go 中的字符串，rune 类型
