@@ -397,3 +397,15 @@ pub fn primes_up_to(upper_bound: u64) -> Vec<u64> {
   primes.into_iter().filter(|&p| p >= 2).collect()
 }
 ```
+
+### RNA Transcription
+
+考查点：match, str vs string, strings
+
+问题：判断 DNA / RNA 序列是否正确，并将 DNA 序列转录成 RNA 序列。
+
+解决：使用 postion() 找到字符串中第一个非法的字符。
+
+```rust
+let pos = dna.chars().position(|c| !"ATCG".contains(c));
+```
