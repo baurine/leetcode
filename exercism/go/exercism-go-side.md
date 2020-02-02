@@ -33,3 +33,9 @@ func AddGigasecond(t time.Time) time.Time {
 问题：将地球上的时间转换成其它星球上的时间
 
 解决：略。主要是 float64 类型的使用
+
+### Accumulate
+
+考查点：lists
+
+详略。
