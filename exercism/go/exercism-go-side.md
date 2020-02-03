@@ -39,3 +39,16 @@ func AddGigasecond(t time.Time) time.Time {
 考查点：lists
 
 详略。
+
+虽然简单，但看了一下社区的解决方案，还是玩出了一些骚操作，比如这样的：
+
+```go
+func Accumulate(src []string, converter func(string) string) (changed []string) {
+	for _, s := range src {
+		changed = append(changed, converter(s))
+	}
+	return
+}
+```
+
+不过上面的解决方案代码是简洁了，但 slice 可以会多次被重新分配空间，效率不如一开始就分配好足够空间的高。
