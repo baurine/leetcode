@@ -1,54 +1,33 @@
 use std::ops::Add;
 
-#[derive(PartialEq)]
-enum TriangleKind {
-    Equilateral,
-    Isosceles,
-    Scalene,
-}
-
 pub struct Triangle<T> {
-    kind: TriangleKind,
-    _marker: std::marker::PhantomData<T>,
+    a: T,
+    b: T,
+    c: T,
 }
 
 impl<T: Copy + PartialEq + PartialOrd + Add<Output = T>> Triangle<T> {
     pub fn build(sides: [T; 3]) -> Option<Triangle<T>> {
         let mut sorted_sides = sides;
-        // sorted_sides.sort(); // sort() need T implement Ord trait, but float doesn't implement Ord trait
+        // sort() need T implement Ord trait, but float doesn't implement Ord trait
+        // sorted_sides.sort();
         sorted_sides.sort_by(|a, b| a.partial_cmp(b).unwrap());
-        if sorted_sides[0] + sorted_sides[1] == sorted_sides[1]
-            || sorted_sides[0] + sorted_sides[1] < sorted_sides[2]
-        {
+        let [a, b, c] = sorted_sides;
+        if a + b == b || a + b < c {
             return None;
         }
-        if sorted_sides[0] == sorted_sides[1] && sorted_sides[1] == sorted_sides[2] {
-            return Some(Triangle {
-                kind: TriangleKind::Equilateral,
-                _marker: std::marker::PhantomData,
-            });
-        }
-        if sorted_sides[0] == sorted_sides[1] || sorted_sides[1] == sorted_sides[2] {
-            return Some(Triangle {
-                kind: TriangleKind::Isosceles,
-                _marker: std::marker::PhantomData,
-            });
-        }
-        return Some(Triangle {
-            kind: TriangleKind::Scalene,
-            _marker: std::marker::PhantomData,
-        });
+        return Some(Triangle { a, b, c });
     }
 
     pub fn is_equilateral(&self) -> bool {
-        self.kind == TriangleKind::Equilateral
+        self.a == self.b && self.b == self.c
     }
 
     pub fn is_scalene(&self) -> bool {
-        self.kind == TriangleKind::Scalene
+        !self.is_isosceles()
     }
 
     pub fn is_isosceles(&self) -> bool {
-        self.is_equilateral() || self.kind == TriangleKind::Isosceles
+        self.a == self.b || self.b == self.c
     }
 }

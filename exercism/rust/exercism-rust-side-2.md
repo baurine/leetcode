@@ -418,6 +418,13 @@ let pos = dna.chars().position(|c| !"ATCG".contains(c));
 
 解决：对三条边从小到大进行排序，然后进行比较判断。
 
+测试：
+
+- `cargo test`
+- `cargo test -- --ignored`
+- `cargo test --features generic`
+- `cargo test -- features generic -- --ignored`
+
 主要难点是引入泛型后产生的问题：
 
 1. 如何将长度与 0 和 0.0 进行比较，答案是无法比较，只能绕过去，使用 `sides[0] + sides[1] == sides[1]` 判断 `sides[0]` 是否为 0
@@ -447,4 +454,40 @@ pub struct Triangle<T> {
 
 越来越觉得 Go/Rust 将 new 变成 static 方法实在是明智啊，相比 C++/Java 的构造函数。因为 new 的时候可能失败啊，这时 C++/Java 的构造函数就很尴尬了，而 Go 可以返回 nil，而 Rust 可以返回 Option::None。
 
-看了一下社区方案，貌似我把问题复杂化了一点... 其实 PhantomData 不是必须的，另外判断三条边相等还是两条边相等，可以用 HashSet 或 BTreeSet (机智)，还可以解构 `let [a, b, c] = sides;` 简化 `sides[0], sides[1]` 的写法...
+看了一下社区方案 (但是基本上只考虑了 u64 的情况)，貌似我把问题复杂化了一点... 其实 PhantomData 不是必须的，另外判断三条边相等还是两条边相等，可以用 HashSet 或 BTreeSet (机智)，还可以解构 `let [a, b, c] = sides;` 简化 `sides[0], sides[1]` 的写法...
+
+参考社区方案把实现简化了一下：
+
+```rust
+use std::ops::Add;
+
+pub struct Triangle<T> {
+    a: T,
+    b: T,
+    c: T,
+}
+
+impl<T: Copy + PartialEq + PartialOrd + Add<Output = T>> Triangle<T> {
+    pub fn build(sides: [T; 3]) -> Option<Triangle<T>> {
+        let mut sorted_sides = sides;
+        sorted_sides.sort_by(|a, b| a.partial_cmp(b).unwrap());
+        let [a, b, c] = sorted_sides;
+        if a + b == b || a + b < c {
+            return None;
+        }
+        return Some(Triangle { a, b, c });
+    }
+
+    pub fn is_equilateral(&self) -> bool {
+        self.a == self.b && self.b == self.c
+    }
+
+    pub fn is_scalene(&self) -> bool {
+        !self.is_isosceles()
+    }
+
+    pub fn is_isosceles(&self) -> bool {
+        self.a == self.b || self.b == self.c
+    }
+}
+```
