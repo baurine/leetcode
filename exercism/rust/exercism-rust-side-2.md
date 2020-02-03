@@ -409,3 +409,42 @@ pub fn primes_up_to(upper_bound: u64) -> Vec<u64> {
 ```rust
 let pos = dna.chars().position(|c| !"ATCG".contains(c));
 ```
+
+### Triangle
+
+考查点：structs (其实还可以加上 PartialEq/PartialOrd/PhantomData)
+
+问题：给三条边的长度 (int 或 float)，判断是否能组成三角形，且是否为等边或对称三角形。
+
+解决：对三条边从小到大进行排序，然后进行比较判断。
+
+主要难点是引入泛型后产生的问题：
+
+1. 如何将长度与 0 和 0.0 进行比较，答案是无法比较，只能绕过去，使用 `sides[0] + sides[1] == sides[1]` 判断 `sides[0]` 是否为 0
+1. 排序，一开始使用 `sort()` 方法，因此 T 要实现 Ord trait，但对 float 进行测试后发现 float 并没有实现 Ord trait，只实现了 PartialOrd，只好改成了 `sort_by()` 方法
+1. PhantomData 的作用。引入泛型后，Triangle 要定义成 `Triangle<T>`，但是 Triangle 的成员里并没有 T 啊，怎么办，终于领悟了 PhanomData 的作用之一，用来标记占位。
+
+```rust
+#[derive(PartialEq)]
+enum TriangleKind {
+    Equilateral,
+    Isosceles,
+    Scalene,
+}
+
+pub struct Triangle<T> {
+    kind: TriangleKind,
+    _marker: std::marker::PhantomData<T>,
+}
+```
+
+复习一下 Rust 和排序/比较相关的 trait，偏序/全序
+
+- PartialEq：代表部分等价关系，定义了 eq 和 ne 两个方法，分别表示 == 和 != 操作
+- Eq：代表等价关系，继承自 PartialEq，但其中没有定义任何方法，实际只是用来标记
+- PartialOrd：对应于偏序，定义了 partial_cmp, lt, le, gt 和 ge 五个方法
+- Ord：对应于全序，定义了 cmp, max 和 min 三个方法
+
+越来越觉得 Go/Rust 将 new 变成 static 方法实在是明智啊，相比 C++/Java 的构造函数。因为 new 的时候可能失败啊，这时 C++/Java 的构造函数就很尴尬了，而 Go 可以返回 nil，而 Rust 可以返回 Option::None。
+
+看了一下社区方案，貌似我把问题复杂化了一点... 其实 PhantomData 不是必须的，另外判断三条边相等还是两条边相等，可以用 HashSet 或 BTreeSet (机智)，还可以解构 `let [a, b, c] = sides;` 简化 `sides[0], sides[1]` 的写法...
