@@ -62,3 +62,15 @@ func Accumulate(src []string, converter func(string) string) (changed []string) 
 解决：略。
 
 刚好 rust 也做到 了 triangle 这一题，虽然是一样的题目，核心算法也一样，但 go 代码和 rust 代码的表现形式实在是迥异。
+
+### ETL
+
+考查点：maps, loops, transforming
+
+问题：将 int -> string 的映射关系变成 char -> int
+
+解决：双重循环即可，详略。
+
+学习到的：
+
+- Go 中 map 的初始化，遍历
