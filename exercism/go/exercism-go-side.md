@@ -74,3 +74,48 @@ func Accumulate(src []string, converter func(string) string) (changed []string) 
 学习到的：
 
 - Go 中 map 的初始化，遍历
+
+### RNA Transcrption
+
+考查点：maps, transforming
+
+问题：将 DNA 转换成 RAN 序列
+
+解决：略。
+
+学习到的：
+
+- bytes.Buffer, buffer.WriteRune(), buffer.String()
+- switch...case，不需要加 break
+
+看了一下社区解决方案，看到一个极简解法：
+
+```go
+func ToRNA(dna string) string {
+	return strings.NewReplacer(
+		"G", "C",
+		"C", "G",
+		"T", "A",
+		"A", "U",
+	).Replace(dna)
+}
+```
+
+还有这样的：
+
+```go
+var transcription = map[byte]byte{
+	'G': 'C',
+	'C': 'G',
+	'T': 'A',
+	'A': 'U',
+}
+
+func ToRNA(dna string) string {
+	var rna []byte
+	for i := range dna {
+		rna = append(rna, transcription[dna[i]])
+	}
+	return string(rna)
+}
+```
