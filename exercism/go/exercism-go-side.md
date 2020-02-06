@@ -119,3 +119,48 @@ func ToRNA(dna string) string {
 	return string(rna)
 }
 ```
+
+### Roman Numerals
+
+考查点：maps, transforming
+
+问题：将阿拉伯数字转换成罗马数字，比如 27 -> XXVII (倒是终于知道了罗马数字是怎么计数的了)
+
+- [On Roman Numerals](http://www.novaroma.org/via_romana/numbers.html)
+
+```go
+var letters = map[int]string{
+	1:    "I",
+	5:    "V",
+	10:   "X",
+	50:   "L",
+	100:  "C",
+	500:  "D",
+	1000: "M",
+}
+```
+
+`IV` 是 4，`VI` 是 6，`IX` 是 10，`XI` 是 11，依此类推。
+
+解决：我的解法，常规解法，按规则逐位解析再拼接。洋洋洒洒写了 100 行，结果一看社区方案，第一个就看到一个很机智的解法，才 20 行，惊呆我了，人才啊。
+
+```go
+var arabics = []int{1000, 900, 500, 400, 100, 90, 50, 40, 10, 9, 5, 4, 1}
+var romans = []string{"M", "CM", "D", "CD", "C", "XC", "L", "XL", "X", "IX", "V", "IV", "I"}
+
+// ToRomanNumeral converts arabic numbers to roman numerals
+func ToRomanNumeral(arabic int) (roman string, err error) {
+	if !(arabic > 0 && arabic <= 3000) {
+		return roman, errors.New("number is out of range")
+	}
+	for i := 0; i < len(arabics); i++ {
+		for arabic >= arabics[i] {
+			arabic -= arabics[i]
+			roman += romans[i]
+		}
+	}
+	return roman, nil
+}
+```
+
+不过总的来说，Go 还是一门比较朴素的语言，写起来就像写 C 一样，没那么多花样，挺好的。
