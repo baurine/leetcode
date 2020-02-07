@@ -164,3 +164,13 @@ func ToRomanNumeral(arabic int) (roman string, err error) {
 ```
 
 不过总的来说，Go 还是一门比较朴素的语言，写起来就像写 C 一样，没那么多花样，挺好的。
+
+### Strain
+
+考查点：arrays, filtering, loops
+
+问题：为 `[]int` `[]string` `[][]int` 实现类似 select/reject 的 Keep/Discard 方法。
+
+实现：略。
+
+从这看出了 Go 没有泛型的不便，相同的方法和代码要写三遍。
