@@ -182,3 +182,17 @@ func ToRomanNumeral(arabic int) (roman string, err error) {
 问题：统计一段 DNA 序列中 A/C/G/T 的个数。
 
 实现：略。
+
+### Bob
+
+考查点：conditional, strings
+
+问题：你朝 bob 说不同的话，它会进行不同的回复。
+
+解决：略。在 Rust 中做过了相同的 track，直接把逻辑复制过来了。
+
+可以用 switch...case 代替多个 if...else if...else if...else
+
+清除左右的空格可以用 strings.TrimSpace()
+
+判断一个全大写字符串里至少有一个字符我用了简单粗暴的 `strings.ContainsAny(s, "ABCDEFGHIJKLMNOPQRSTUVWXYZ")`，看了社区方案，很多用了 `unicode.IsLetter(c)`。
