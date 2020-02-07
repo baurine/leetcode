@@ -1,15 +1,17 @@
-// This is a "stub" file.  It's a little start on your solution.
-// It's not a complete solution though; you have to write some code.
-
-// Package acronym should have a package comment that summarizes what it's about.
-// https://golang.org/doc/effective_go.html#commentary
+// Package acronym handles string's acronym
 package acronym
 
-// Abbreviate should have a comment documenting it.
+import "strings"
+
+// Abbreviate returns acronym of a string
 func Abbreviate(s string) string {
-	// Write some code here to pass the test suite.
-	// Then remove all the stock comments.
-	// They're here to help you get started but they only clutter a finished solution.
-	// If you leave them in, reviewers may protest!
-	return ""
+	f := func(c rune) bool {
+		return c == ' ' || c == '-' || c == '_'
+	}
+	slice := strings.FieldsFunc(s, f)
+	capitals := make([]string, len(slice))
+	for i, str := range slice {
+		capitals[i] = string(strings.ToUpper(str)[0])
+	}
+	return strings.Join(capitals, "")
 }

@@ -196,3 +196,15 @@ func ToRomanNumeral(arabic int) (roman string, err error) {
 清除左右的空格可以用 strings.TrimSpace()
 
 判断一个全大写字符串里至少有一个字符我用了简单粗暴的 `strings.ContainsAny(s, "ABCDEFGHIJKLMNOPQRSTUVWXYZ")`，看了社区方案，很多用了 `unicode.IsLetter(c)`。
+
+### Acronym
+
+考查点：regex, strings (实际我并没有使用 regex)
+
+问题：返回一段文本串的首字母缩写。
+
+解决：略。
+
+使用到了 strings.FiledsFunc() 方法进行 split。
+
+最近这些题全是各种处理字符串，主要是 strings 包的使用。
