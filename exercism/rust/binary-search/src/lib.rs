@@ -1,3 +1,5 @@
+use std::cmp::Ordering;
+
 fn find_1(array: &[i32], key: i32) -> Option<usize> {
     if array.is_empty() {
         return None;
@@ -24,21 +26,22 @@ fn find_2(array: &[i32], key: i32) -> Option<usize> {
     let mut idx_base = 0;
     while !s.is_empty() {
         let middle_idx = s.len() / 2;
-        let value = s.get(middle_idx).unwrap();
-        if value == &key {
+        // let value = s.get(middle_idx).unwrap();
+        let value = s[middle_idx];
+        if value == key {
             return Some(idx_base + middle_idx);
         }
-        if value < &key {
+        if value < key {
             s = &s[middle_idx + 1..];
             idx_base += middle_idx + 1;
         } else {
-            s = &s[0..middle_idx];
+            s = &s[..middle_idx];
         }
     }
     None
 }
 
-fn find_3<T: PartialOrd>(array: &[T], key: T) -> Option<usize> {
+fn find_3<T: Ord>(array: &[T], key: T) -> Option<usize> {
     let mut s = &array[..];
     let mut idx_base = 0;
     while !s.is_empty() {
@@ -51,14 +54,29 @@ fn find_3<T: PartialOrd>(array: &[T], key: T) -> Option<usize> {
             s = &s[middle_idx + 1..];
             idx_base += middle_idx + 1;
         } else {
-            s = &s[0..middle_idx];
+            s = &s[..middle_idx];
         }
     }
     None
 }
 
-pub fn find(array: &[i32], key: i32) -> Option<usize> {
+pub fn find_4(array: &[i32], key: i32) -> Option<usize> {
     find_1(array, key);
     find_2(array, key);
     find_3(array, key)
+}
+
+pub fn find<R: AsRef<[T]>, T: Ord>(array: R, key: T) -> Option<usize> {
+    let s = array.as_ref();
+    if s.is_empty() {
+        return None;
+    }
+    let middle = s.len() / 2;
+    // right include middle element
+    let (left, right) = s.split_at(middle);
+    match key.cmp(s.get(middle).unwrap()) {
+        Ordering::Equal => Some(middle),
+        Ordering::Less => find(left, key),
+        Ordering::Greater => find(&right[1..], key).map(|x| x + middle + 1),
+    }
 }
