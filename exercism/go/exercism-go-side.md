@@ -174,3 +174,11 @@ func ToRomanNumeral(arabic int) (roman string, err error) {
 实现：略。
 
 从这看出了 Go 没有泛型的不便，相同的方法和代码要写三遍。
+
+### Nucleotide Count
+
+考查点：maps, parsing, strings
+
+问题：统计一段 DNA 序列中 A/C/G/T 的个数。
+
+实现：略。
