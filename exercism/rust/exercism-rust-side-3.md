@@ -77,3 +77,23 @@ fn main() {
 ```
 
 在 f 中直接以 T 的形式使用 b 且离开作用域时 b 会被析构掉，所以 f 只能被调用一次，f 是 FnOnce。
+
+### Queen Attack
+
+考查点：result type, structs, traits
+
+问题：判断国际象棋棋盘上两个王后能否相互攻击。
+
+解决：判断两个坐标是否在同一水平或对角线上。
+
+学习到的：
+
+- 求绝对值：`(x-y).abs()`
+- match 中使用 range:
+
+```rust
+match (rank, file) {
+  (0..8, 0..8) => Some(...),
+  _ => None
+}
+```
