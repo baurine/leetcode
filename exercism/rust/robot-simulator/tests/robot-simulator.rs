@@ -142,4 +142,15 @@ fn follow_instructions_to_move_east_and_north() {
     let robot = Robot::new(8, 4, Direction::South).instructions("LAAARRRALLLL");
     assert_eq!((11, 5), robot.position());
     assert_eq!(&Direction::North, robot.direction());
+
+    let old_r = Robot::new(1, 2, Direction::South);
+    let next_r = old_r.test();
+    println!("{:?}", next_r.direction());
+    // println!("{:?}", old_r.direction()); // old_r has moved to next_r
+
+    let nn_r = next_r.instructions("LA");
+    // println!("{:?}", next_r.position()); // next_r has moved to nn_r
+
+    let nnn_r = nn_r.turn_right();
+    // println!("{:?}", nn_r.position());  // nn_r has moved to nnn_r
 }

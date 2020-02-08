@@ -62,6 +62,11 @@ impl Robot {
         })
     }
 
+    // test ownership move
+    pub fn test(self) -> Self {
+        self
+    }
+
     pub fn position(&self) -> (i32, i32) {
         (self.x, self.y)
     }
