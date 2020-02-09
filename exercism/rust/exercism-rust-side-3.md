@@ -97,3 +97,16 @@ match (rank, file) {
   _ => None
 }
 ```
+
+### Bowling
+
+考查点：goofy bowling logic, result type
+
+问题：根据保龄球的计分规则，得到一场保龄球的最后得分。
+
+解决：略。(看了社区方案，也是各种各样，看到一个最少的是 50 行，我的有 110 行，大部分的都是 100 行左右)
+
+学习到的：
+
+- bowling 的计分规则，还真是有点小复杂，分失误/补中/全中三种情况。https://www.jianshu.com/p/4c737ce5baac
+- 又遇到了 mutable borrow 和 borrow 同时使用导致编译不通过的情况，没想到什么好的解决办法，用了 workround 绕过去了
