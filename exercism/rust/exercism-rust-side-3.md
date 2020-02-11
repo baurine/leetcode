@@ -110,3 +110,45 @@ match (rank, file) {
 
 - bowling 的计分规则，还真是有点小复杂，分失误/补中/全中三种情况。https://www.jianshu.com/p/4c737ce5baac
 - 又遇到了 mutable borrow 和 borrow 同时使用导致编译不通过的情况，没想到什么好的解决办法，用了 workround 绕过去了
+
+### Tournament
+
+考查点：sorting, structs, enums, hashmaps (我没有用到 enums)
+
+问题：根据各足球队之间的比赛结果生成最终的计分表。
+
+解决：略。
+
+逐渐有点得心应手了。
+
+忘了直接用 `format!()` 也可以得到 String，但我觉得为 Team 实现 fmt::Display trait 更佳。
+
+看到一个不错的社区方案 (https://exercism.io/tracks/rust/exercises/tournament/solutions/2d4c31fe40c9459193cb8313f94c3f56)：
+
+```rust
+//...
+        scores
+            .entry(y[0])
+            .and_modify(|stats| *stats = *stats + team1result)
+            .or_insert(team1result);
+
+        scores
+            .entry(y[1])
+            .and_modify(|stats| *stats = *stats + team2result)
+            .or_insert(team2result);
+
+    let mut vecscores: Vec<(&str, Stats)> = scores.drain().collect();
+    vecscores.sort_by(
+        |(key1, value1), (key2, value2)| match value1.Score().cmp(&value2.Score()) {
+            Ordering::Less => Ordering::Greater,
+            Ordering::Greater => Ordering::Less,
+            _ => match key1.partial_cmp(key2) {
+                Some(Order) => Order,
+                None => Ordering::Equal,
+            },
+        },
+    );
+//...
+```
+
+`entry().and_modify().or_insert()`, `drain()` 学习一下。
