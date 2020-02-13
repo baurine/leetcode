@@ -152,3 +152,17 @@ match (rank, file) {
 ```
 
 `entry().and_modify().or_insert()`, `drain()` 学习一下。
+
+### Alphametics
+
+考查点：combinations, parsing, strings
+
+问题：解迷题，比如 "SEND + MORE = MONEY"，每个字母表示 0~9 中的一位数字，首位不能是 0，求各字母代表的数字。
+
+解决：略。看代码。
+
+`(0..10).permutations(n)` 帮大忙了，将 0~9 进行排列组合。否则就要从 10^(n-1) 到 10^n 进行暴力枚举，当 n = 10 时要跑很久很久。
+
+permutations:
+
+- [分享一个由 Raymond Hettinger 编写的字母算术解迷函数](https://pantao.parcmg.com/press/solve-cryptarithms-by-raymond-hettinger-via-python.html)
