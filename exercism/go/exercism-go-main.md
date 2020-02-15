@@ -157,3 +157,15 @@ switch c {
 ```
 
 - [Switch vs. Map: Which is the Better Way to Branch in Go?](https://hashrocket.com/blog/posts/switch-vs-map-which-is-the-better-way-to-branch-in-go)
+
+### 6. Isogram
+
+考查点：sequences, strings
+
+问题：判断一个单词或句子里有无重复的字符
+
+实现：略。
+
+学习到的：
+
+- 判断一个 rune 是否为字母：`unicode.IsLetter(r)`
