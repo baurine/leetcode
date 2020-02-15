@@ -141,3 +141,19 @@ Rust 中字符串转换在数字可以用 `"42".parse()`，Go 还是用 strconv 
 - map 的初始化，遍历
 - strings 包的使用，包括转大小写，判断包含
 - Go 中的字符串，rune 类型
+
+经过 mentor review 后，被建议说可以用 switch...case 替代 map，性能有很大的提升，尝试后发现，果然，而且有一倍的提升，big suprise!
+
+而且，多个相同 case 的写法是 `case 'A', 'E'...` 这样，而不是 `case 'A': case 'E': ...`
+
+```go
+switch c {
+	case 'A', 'E', 'I', 'O', 'U':
+		s = 1
+	case 'B', 'D':
+		s = 2
+	...
+}
+```
+
+- [Switch vs. Map: Which is the Better Way to Branch in Go?](https://hashrocket.com/blog/posts/switch-vs-map-which-is-the-better-way-to-branch-in-go)

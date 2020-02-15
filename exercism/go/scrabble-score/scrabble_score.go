@@ -2,7 +2,40 @@ package scrabble
 
 import "strings"
 
-var scoreTable = map[rune]int{
+var scoreTable1 = map[int]string{
+	1:  "AEIOULNRST",
+	2:  "DG",
+	3:  "BCMP",
+	4:  "FHVWY",
+	5:  "K",
+	8:  "JX",
+	10: "QZ",
+}
+
+// Score1 calculates the scores of a string
+func Score1(s string) int {
+	scores := 0
+	for _, c := range strings.ToUpper(s) {
+		for score, chars := range scoreTable1 {
+			if strings.ContainsRune(chars, c) {
+				scores += score
+				continue
+			}
+		}
+	}
+	return scores
+}
+
+// === RUN   TestScore
+// --- PASS: TestScore (0.00s)
+// goos: darwin
+// goarch: amd64
+// pkg: scrabble
+// BenchmarkScore-8          115317             10121 ns/op              80 B/op          9 allocs/op
+// PASS
+// ok      scrabble        1.597s
+
+var scoreTable2 = map[rune]int{
 	'A': 1,
 	'E': 1,
 	'I': 1,
@@ -31,11 +64,55 @@ var scoreTable = map[rune]int{
 	'Z': 10,
 }
 
-// Score calculates the scores of a string
-func Score(s string) int {
+// Score2 calculates the scores of a string
+func Score2(s string) int {
 	scores := 0
 	for _, c := range strings.ToUpper(s) {
-		scores += scoreTable[c]
+		scores += scoreTable2[c]
 	}
 	return scores
 }
+
+// === RUN   TestScore
+// --- PASS: TestScore (0.00s)
+// goos: darwin
+// goarch: amd64
+// pkg: scrabble
+// BenchmarkScore-8         1227236               987 ns/op              80 B/op          9 allocs/op
+// PASS
+// ok      scrabble        6.893s
+
+// Score calculates the scores of a string
+func Score(src string) int {
+	scores := 0
+	for _, c := range strings.ToUpper(src) {
+		var s int
+		switch c {
+		case 'A', 'E', 'I', 'O', 'U', 'L', 'N', 'R', 'S', 'T':
+			s = 1
+		case 'D', 'G':
+			s = 2
+		case 'B', 'C', 'M', 'P':
+			s = 3
+		case 'F', 'H', 'V', 'W', 'Y':
+			s = 4
+		case 'K':
+			s = 5
+		case 'J', 'X':
+			s = 8
+		case 'Q', 'Z':
+			s = 10
+		}
+		scores += s
+	}
+	return scores
+}
+
+// === RUN   TestScore
+// --- PASS: TestScore (0.00s)
+// goos: darwin
+// goarch: amd64
+// pkg: scrabble
+// BenchmarkScore-8         2434929               487 ns/op              80 B/op          9 allocs/op
+// PASS
+// ok      scrabble        2.038s
