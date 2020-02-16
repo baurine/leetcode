@@ -239,3 +239,11 @@ func Reverse(input string) string {
 ```
 
 先通过 `bString := []rune(input)` 将 string 转换成了 rune slice。但我觉得这样占用额外的内存空间。
+
+### Collatz Conjecture
+
+考查点：conditionals, control flow loops
+
+问题：根据规则：偶数除以 2，奇数乘以 3 加上 1，最终会变成 1，需要几步。
+
+这个问题和 euler 14 题是一样的，有迭代和递归两种解法。
