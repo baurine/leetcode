@@ -15,6 +15,7 @@ func TestReverse(t *testing.T) {
 	}
 }
 
+// 这个测试函数不知怎么运作的，会导致 Reverse() 方法中的 Println() 方法打印出很奇怪的内容
 func TestReverseOfReverse(t *testing.T) {
 	assertion := func(s string) bool {
 		return s == Reverse(Reverse(s))

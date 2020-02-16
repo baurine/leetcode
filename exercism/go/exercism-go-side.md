@@ -205,6 +205,37 @@ func ToRomanNumeral(arabic int) (roman string, err error) {
 
 解决：略。
 
-使用到了 strings.FiledsFunc() 方法进行 split。
+使用到了 strings.FieldsFunc() 方法进行 split。
 
 最近这些题全是各种处理字符串，主要是 strings 包的使用。
+
+### Reverse String
+
+考查点：sequences, strings
+
+问题：反转字符串。(包括中文)
+
+学习到的：
+
+- 获取字符串中 rune 的个数：`count := strings.Count(src, "") - 1`
+- 在对 string 进行 rune 遍历时，即 `for _idx, c := range src {...}`，此处的 `_idx` 并不是 rune index，而是 byte index，所以为了记录 rune 的索引，还需要额外使用一个变量，比如 i
+
+在社区中看到的另一种方案：
+
+```go
+//Reverse takes a string and reverses it
+func Reverse(input string) string {
+	if input != "" {
+		bString := []rune(input)
+		var rString = make([]rune, 0)
+		for i := len(bString) - 1; i >= 0; i-- {
+			rString = append(rString, bString[i])
+		}
+		return string(rString)
+	} else {
+		return input
+	}
+}
+```
+
+先通过 `bString := []rune(input)` 将 string 转换成了 rune slice。但我觉得这样占用额外的内存空间。
