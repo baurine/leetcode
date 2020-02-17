@@ -247,3 +247,13 @@ func Reverse(input string) string {
 问题：根据规则：偶数除以 2，奇数乘以 3 加上 1，最终会变成 1，需要几步。
 
 这个问题和 euler 14 题是一样的，有迭代和递归两种解法。
+
+### Protein Translation
+
+考查点：filtering, maps, sequences (filtering/maps 没有用到...)
+
+问题：将一段 RNA 序列翻译成多肽。
+
+解决：略。
+
+继续使用 switch...case 替代 map。因为前面某题 mentor 说在这种场景下 switch...case 有更多性能。
