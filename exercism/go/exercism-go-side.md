@@ -257,3 +257,13 @@ func Reverse(input string) string {
 解决：略。
 
 继续使用 switch...case 替代 map。因为前面某题 mentor 说在这种场景下 switch...case 有更多性能。
+
+### Darts
+
+考查点：conditionals, math
+
+问题：一个简化版的飞镖游戏，一个半径为 10 的飞镖盘，如果飞镖投掷在 1 以内得 10 分，1~5 内得 5 分，10 以内得 1 分，根据投掷的坐标求得分。
+
+解决：略。就是简单的数学问题嘛。勾股定律。
+
+学习到的：用 switch...case 替代 if...else if...else
