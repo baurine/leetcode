@@ -267,3 +267,11 @@ func Reverse(input string) string {
 解决：略。就是简单的数学问题嘛。勾股定律。
 
 学习到的：用 switch...case 替代 if...else if...else
+
+### ListOps
+
+考查点：recursion, type conversion, lists ... (啊，并没有用 recursion 来实现)
+
+问题：为 []int 类型实现 Fold/Filter/Map/Append/Concat 等成员方法。
+
+实现：略。
