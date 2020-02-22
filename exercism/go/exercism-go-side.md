@@ -275,3 +275,29 @@ func Reverse(input string) string {
 问题：为 []int 类型实现 Fold/Filter/Map/Append/Concat 等成员方法。
 
 实现：略。
+
+学习到的：
+
+初版我用了指针作为接收者，如下所示：
+
+```go
+func (il *IntList) Foldl(fn binFunc, initial int) int {
+	ret := initial
+	for _, v := range *il {
+		ret = fn(ret, v)
+	}
+	return ret
+}
+```
+
+但实际 slice 本身是个很轻量的值，即使进行值拷贝代价也很小，其底层存储的实际值并不会进行拷贝。所以对于 slice 来说，实全可以用值作为接收者。如下所示：
+
+```go
+func (il IntList) Foldl(fn binFunc, initial int) int {
+	ret := initial
+	for _, v := range il {
+		ret = fn(ret, v)
+	}
+	return ret
+}
+```
