@@ -169,3 +169,65 @@ switch c {
 学习到的：
 
 - 判断一个 rune 是否为字母：`unicode.IsLetter(r)`
+
+通过 mentor 的 review，学习到了更简洁和巧妙的写法，并学习到了 map 判断元素是否存在的巧妙用法。
+
+初版：
+
+```go
+func IsIsogram(s string) bool {
+	chars := ""
+	for _, c := range strings.ToLower(s) {
+		if !unicode.IsLetter(c) {
+			continue
+		}
+		if strings.ContainsRune(chars, c) {
+			return false
+		}
+		chars += string(c)
+	}
+	return true
+}
+```
+
+需要遍历两次，经过 mentor 指点后，改用 map 存储结果，使只需要遍历字符串一遍。第二版：
+
+```go
+func IsIsogram(s string) bool {
+	chars := map[rune]int{}
+	for _, c := range strings.ToLower(s) {
+		if !unicode.IsLetter(c) {
+			continue
+		}
+		_, ok := chars[c]
+		if ok {
+			return false
+		}
+		chars[c] = 1
+	}
+	return true
+}
+```
+
+使用了 `map[rune]int` 存储结果，使用 `_, ok := chars[c]` 来判断元素是否已存在。mentor 指点说可以用 `map[rune]bool` 来使写法更简洁。原来这里有妙用，如果只使用一个变量来判断，如 `v := chars[c]`，且此元素不存在，会返回值的类型的默认值，比如 string 的默认值是 ""，bool 类型的默认值是 false。
+
+所以，第三版：
+
+```go
+func IsIsogram(s string) bool {
+	chars := map[rune]bool{}
+	for _, c := range strings.ToLower(s) {
+		if !unicode.IsLetter(c) {
+			continue
+		}
+		exist := chars[c]
+		if exist {
+			return false
+		}
+		chars[c] = true
+	}
+	return true
+}
+```
+
+妙！
