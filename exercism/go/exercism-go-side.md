@@ -301,3 +301,14 @@ func (il IntList) Foldl(fn binFunc, initial int) int {
 	return ret
 }
 ```
+
+### Scale Generator
+
+考查点：pattern matching, strings (pattern matching?)
+
+问题：根据起始音符和音符之间的间隔，求一段音符序列
+
+学习到的：
+
+- 简单的乐律知识，sharp notes, flat notes ...
+- `strings.Title()` 可以让一段字符串中每个单词的首字母大写
