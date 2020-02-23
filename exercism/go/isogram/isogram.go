@@ -7,16 +7,15 @@ import (
 
 // IsIsogram checks whether a word or a pharse is isogram
 func IsIsogram(s string) bool {
-	chars := map[rune]bool{}
+	seen := map[rune]bool{}
 	for _, c := range strings.ToLower(s) {
 		if !unicode.IsLetter(c) {
 			continue
 		}
-		exist := chars[c]
-		if exist {
+		if seen[c] {
 			return false
 		}
-		chars[c] = true
+		seen[c] = true
 	}
 	return true
 }
