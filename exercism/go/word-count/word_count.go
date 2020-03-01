@@ -16,12 +16,13 @@ func WordCount(sentence string) Frequency {
 	})
 	for _, w := range words {
 		w = strings.Trim(w, "'")
-		v, exist := fre[w]
-		if exist {
-			fre[w] = v + 1
-		} else {
-			fre[w] = 1
-		}
+		// v, exist := fre[w]
+		// if exist {
+		// 	fre[w] = v + 1
+		// } else {
+		// 	fre[w] = 1
+		// }
+		fre[w]++
 	}
 	return fre
 }

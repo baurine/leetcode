@@ -341,3 +341,20 @@ func (il IntList) Foldl(fn binFunc, initial int) int {
 
 - 用 strings.FieldsFunc() 进行复杂的 split
 - 用 strings.Trim(s, "'') 进行 trim
+
+看了社区方案后，发现代码可以简化：
+
+```go
+	for _, w := range words {
+		w = strings.Trim(w, "'")
+		// v, exist := fre[w]
+		// if exist {
+		// 	fre[w] = v + 1
+		// } else {
+		// 	fre[w] = 1
+		// }
+		fre[w]++
+	}
+```
+
+因为在 go 中，如果 map 中元素不存在，则返回 value 的默认值，而这里 count 是 int，默认值是 0。所以不需要判断是否存在。
