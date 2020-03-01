@@ -320,3 +320,11 @@ func (il IntList) Foldl(fn binFunc, initial int) int {
 问题：判断一段字符串是否是 Pangram，即至少用到了 a-z 所有字母一次。
 
 解决：略。用 `seen := make([]bool, 26)`，长度为 26 的切片作为位图标记是否用到了 a-z 字母。
+
+### Anagram
+
+考查点：filtering, parsing, sorting, strings (没用到 filtering 和 parsing...)
+
+问题：判断一个 word 是不是另一个 word 所有字母的乱序组合。
+
+解决：对两个 word 进行按字母进行排序然后对比就行了。
