@@ -312,3 +312,11 @@ func (il IntList) Foldl(fn binFunc, initial int) int {
 
 - 简单的乐律知识，sharp notes, flat notes ...
 - `strings.Title()` 可以让一段字符串中每个单词的首字母大写
+
+### Pangram
+
+考查点：loops, strings
+
+问题：判断一段字符串是否是 Pangram，即至少用到了 a-z 所有字母一次。
+
+解决：略。用 `seen := make([]bool, 26)`，长度为 26 的切片作为位图标记是否用到了 a-z 字母。
