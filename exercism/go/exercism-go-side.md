@@ -328,3 +328,16 @@ func (il IntList) Foldl(fn binFunc, initial int) int {
 问题：判断一个 word 是不是另一个 word 所有字母的乱序组合。
 
 解决：对两个 word 进行按字母进行排序然后对比就行了。
+
+### Word Count
+
+考查点：sorting, strings (sorting??)
+
+问题：计算一个 sentence 中各个 word 出现的频次。
+
+解决：略。
+
+学习到的：
+
+- 用 strings.FieldsFunc() 进行复杂的 split
+- 用 strings.Trim(s, "'') 进行 trim
