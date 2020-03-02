@@ -358,3 +358,11 @@ func (il IntList) Foldl(fn binFunc, initial int) int {
 ```
 
 因为在 go 中，如果 map 中元素不存在，则返回 value 的默认值，而这里 count 是 int，默认值是 0。所以不需要判断是否存在。
+
+### Proverb
+
+考查点：arrays, loops, strings
+
+问题：输入字符串数组，生成一首诗。
+
+解决：略。
