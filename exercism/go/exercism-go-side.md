@@ -366,3 +366,11 @@ func (il IntList) Foldl(fn binFunc, initial int) int {
 问题：输入字符串数组，生成一首诗。
 
 解决：略。
+
+### Run Length Encoding
+
+考查点：parsing, strings, transforming
+
+问题：类似一种压缩算法，将相同字符合并，比如 "WWWWWWWWWWWWBWWWWWWWWWWWWBBBWWWWWWWWWWWWWWWWWWWWWWWWB" -> "12WB12W3B24WB"，同时支持解压。
+
+解决：略。
