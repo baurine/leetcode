@@ -374,3 +374,5 @@ func (il IntList) Foldl(fn binFunc, initial int) int {
 问题：类似一种压缩算法，将相同字符合并，比如 "WWWWWWWWWWWWBWWWWWWWWWWWWBBBWWWWWWWWWWWWWWWWWWWWWWWWB" -> "12WB12W3B24WB"，同时支持解压。
 
 解决：略。
+
+看了社区方案，可以用 strings.Builder 提升性能，使用它的 WriteRune(), WriteString() 方法，而且有 strings.Repeat() 方法。
