@@ -231,3 +231,7 @@ func IsIsogram(s string) bool {
 ```
 
 妙！
+
+### 7. Difference Of Squares
+
+求 1~n 的和的平方，与平方的和的差。太简单，略过。
