@@ -166,3 +166,32 @@ match (rank, file) {
 permutations:
 
 - [分享一个由 Raymond Hettinger 编写的字母算术解迷函数](https://pantao.parcmg.com/press/solve-cryptarithms-by-raymond-hettinger-via-python.html)
+
+### Two Bucket
+
+Refs:
+
+- [逻辑思维编程 - 倒水问题](https://blog.csdn.net/huyoufu200920201078/article/details/78989161)
+- [倒水问题的万能解法（扩展欧几里德算法）](https://blog.csdn.net/lanchunhui/article/details/50594649)
+- [倒水问题 - 经典面试题](https://www.iteye.com/blog/gaotong1991-2043689)
+
+解法：扩展欧几里德算法。
+
+问题可以归纳成：两个 x 升和 y 升的桶，能否得到 z 升的容量，z <= max(x,y)。
+
+首先要判断能否实现。对 x 乘以 1..n，然后对 y 取模，如果有一个余数等于 z，则可以得到，如果没有任何余数等于 z，则不能得到。
+
+具体的步骤：
+
+1. 先将 x 升的桶 1 填满
+1. 将桶 1 倒入桶 2，这里有两种情况
+   1. 如果桶 2 的剩余空间大于桶 1 的当前容量，如此操作后，桶 1 为 0，桶 2 为原来的容量加上桶 1 的容量
+   1. 如果桶 2 的剩余空间小于等于桶 1 的当前容量，如此操作后，桶 2 补倒满，桶 1 剩余一些容量。将被倒满的桶 2 清空
+1. 对比桶 1 或桶 2 是否达到目标容量
+1. 依次重复上面的步骤，直到实现目标容量
+
+大致实现就是这样。
+
+但这一题加了一些额外的内容，增加了一点点复杂度。上面的解法都是从填充桶 1 开始的，但这里允许从桶 2 开始填充，而且不允许把桶 2 填充满后再倒掉，再填满桶 1，从而转换成从桶 1 开始填充的情况。
+
+但实际确实可以转换，而且更简单，那就是直接把桶 2 当成桶 1，把桶 1 当成桶 2。即 `solve(bucket_1, bucket_2, goal, &Bucket::One) == solve(bucket_2, bucket_1, goal, &Bucket::Two)`。
