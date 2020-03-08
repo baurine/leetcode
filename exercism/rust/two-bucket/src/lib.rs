@@ -1,5 +1,3 @@
-use std::collections::HashSet;
-
 #[derive(PartialEq, Eq, Debug)]
 pub enum Bucket {
     One,
@@ -18,83 +16,79 @@ pub struct BucketStats {
     pub other_bucket: u8,
 }
 
-pub fn is_solvable(cap_1: u8, cap_2: u8, goal: u8) -> bool {
-    if cap_1 == goal || cap_2 == goal {
+pub fn is_solvable(bucket_1_cap: u8, bucket_2_cap: u8, goal: u8) -> bool {
+    if bucket_1_cap == goal || bucket_2_cap == goal {
         return true;
     }
-    let mut remains: HashSet<u8> = HashSet::new();
+    let first_remain: u8 = bucket_1_cap % bucket_2_cap;
     for i in 1.. {
-        let remain = i * cap_1 % cap_2;
+        let remain = i * bucket_1_cap % bucket_2_cap;
         if remain == goal {
             return true;
         }
-        if remains.contains(&remain) {
+        if i > 1 && remain == first_remain {
             return false;
         }
-        remains.insert(remain);
     }
     false
 }
 
-pub fn ext_euclid(cap_1: u8, cap_2: u8, goal: u8) -> (u8, u8, u8) {
+pub fn ext_euclid(bucket_1_cap: u8, bucket_2_cap: u8, goal: u8) -> (u8, u8, u8) {
     let mut moves = 0_u8;
-    let mut cur_1 = 0_u8;
-    let mut cur_2 = 0_u8;
-    let (goal_cap, other_liter) = loop {
-        if cur_1 == 0 {
-            cur_1 = cap_1;
-            moves += 1;
-        } else if cur_2 == 0 && cap_2 == goal {
-            cur_2 = cap_2;
-            moves += 1;
-        } else if cur_1 < cap_2 - cur_2 {
-            cur_2 += cur_1;
-            cur_1 = 0;
-            moves += 1;
+    let mut bucket_1_cur = 0_u8;
+    let mut bucket_2_cur = 0_u8;
+    let (goal_bucket_cap, other_bucket) = loop {
+        if bucket_1_cur == 0 {
+            bucket_1_cur = bucket_1_cap;
+        } else if bucket_2_cur == 0 && bucket_2_cap == goal {
+            bucket_2_cur = bucket_2_cap;
+        } else if bucket_1_cur < bucket_2_cap - bucket_2_cur {
+            bucket_2_cur += bucket_1_cur;
+            bucket_1_cur = 0;
         } else {
-            cur_1 = cur_1 - (cap_2 - cur_2);
-            cur_2 = cap_2;
-            moves += 1;
+            bucket_1_cur = bucket_1_cur - (bucket_2_cap - bucket_2_cur);
+            bucket_2_cur = bucket_2_cap;
         }
-        if cur_1 == goal {
-            break (cap_1, cur_2);
+        moves += 1;
+        if bucket_1_cur == goal {
+            break (bucket_1_cap, bucket_2_cur);
         }
-        if cur_2 == goal {
-            break (cap_2, cur_1);
+        if bucket_2_cur == goal {
+            break (bucket_2_cap, bucket_1_cur);
         }
-        if cur_2 == cap_2 {
-            cur_2 = 0;
+        if bucket_2_cur == bucket_2_cap {
+            bucket_2_cur = 0;
             moves += 1;
         }
     };
-    (moves, goal_cap, other_liter)
+    (moves, goal_bucket_cap, other_bucket)
 }
 
 /// Solve the bucket problem
 pub fn solve(
-    capacity_1: u8,
-    capacity_2: u8,
+    bucket_1_cap: u8,
+    bucket_2_cap: u8,
     goal: u8,
     start_bucket: &Bucket,
 ) -> Option<BucketStats> {
-    if start_bucket == &Bucket::One && !is_solvable(capacity_1, capacity_2, goal) {
+    if start_bucket == &Bucket::One && !is_solvable(bucket_1_cap, bucket_2_cap, goal) {
         return None;
     }
-    if start_bucket == &Bucket::Two && !is_solvable(capacity_2, capacity_1, goal) {
+    if start_bucket == &Bucket::Two && !is_solvable(bucket_2_cap, bucket_1_cap, goal) {
         return None;
     }
-    let (moves, goal_cap, other_liter) = if start_bucket == &Bucket::One {
-        ext_euclid(capacity_1, capacity_2, goal)
+    let (moves, goal_bucket_cap, other_bucket) = if start_bucket == &Bucket::One {
+        ext_euclid(bucket_1_cap, bucket_2_cap, goal)
     } else {
-        ext_euclid(capacity_2, capacity_1, goal)
+        ext_euclid(bucket_2_cap, bucket_1_cap, goal)
     };
     Some(BucketStats {
         moves,
-        goal_bucket: if goal_cap == capacity_1 {
+        goal_bucket: if goal_bucket_cap == bucket_1_cap {
             Bucket::One
         } else {
             Bucket::Two
         },
-        other_bucket: other_liter,
+        other_bucket,
     })
 }
