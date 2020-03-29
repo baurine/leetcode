@@ -235,3 +235,8 @@ func IsIsogram(s string) bool {
 ### 7. Difference Of Squares
 
 求 1~n 的和的平方，与平方的和的差。太简单，略过。
+
+mentor review，告之有更简单的方法，可以不用循环，好吧，直接套数据公式。
+
+- 和的平方：`((1+n)*n/2) * ((1+n)*n/2)`
+- 平方之和：`n*(n+1)*(2n+1)/6`
