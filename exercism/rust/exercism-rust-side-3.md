@@ -217,3 +217,11 @@ fn is_palindrome(n: u64) -> bool {
 ```
 
 这个例子重度使用 match，几科每一步都用 match 来进行判断。对 match 时所用权的转移还有待复习，加深理解。
+
+### Saddle Points
+
+问题：求一个矩阵中，在行上为最大值，列上为最小值的那些值。
+
+解决：暴力枚举。
+
+用到的迭代器方法：enumerate(), all()
