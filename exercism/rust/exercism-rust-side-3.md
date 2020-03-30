@@ -225,3 +225,31 @@ fn is_palindrome(n: u64) -> bool {
 解决：暴力枚举。
 
 用到的迭代器方法：enumerate(), all()
+
+### Isogram
+
+考查点：chars, iterators, strings
+
+问题：判断一个字符串里有没有重复的字符 (不包括空格和连字符)，如果没有重复则为 isogram。
+
+解决：遍历，使用 HashSet 存储遍历过的字符。
+
+瞄了一眼社区的解决方法，看了前几个，解法是千奇百怪，没一个人用这我种朴素的方法，都是迭代器一迭到底，比如 `candidate.chars().filter().map().all()`，大部分都用了 all() 这个方法。
+
+贴个[例子](https://exercism.io/tracks/rust/exercises/isogram/solutions/7fdbc2e4b59345008de6eb7679bbf38a)：
+
+```rust
+use std::collections::HashSet;
+
+pub fn check(candidate: &str) -> bool {
+    let mut chr_set = HashSet::new();
+    candidate.to_lowercase()
+        .chars()
+        .filter(|c| c.is_alphabetic())
+        .all(|c| chr_set.insert(c))
+}
+```
+
+仔细研究了一下，倒确实是很巧妙啊，HashSet 的 insert() 方法返回的是 bool 值，如果值已存在，则表示插入失败，返回 false，否则返回 true。
+
+rust 和 go 相比，奇淫技巧很是多啊。相同的问题，rust 的解法每个人都不同，但用 go 的话，每个人的都大同小异。
